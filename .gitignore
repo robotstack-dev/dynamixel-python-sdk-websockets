@@ -54,3 +54,8 @@
 python/build/
 python/dist/
 python/src/dynamixel_sdk.egg-info/
+python/src/dynamixel_sdk_with_websockets.egg-info/top_level.txt
+python/src/dynamixel_sdk_with_websockets.egg-info/SOURCES.txt
+python/src/dynamixel_sdk_with_websockets.egg-info/requires.txt
+python/src/dynamixel_sdk_with_websockets.egg-info/PKG-INFO
+python/src/dynamixel_sdk_with_websockets.egg-info/dependency_links.txt

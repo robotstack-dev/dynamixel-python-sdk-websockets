@@ -90,13 +90,32 @@ class PortHandler:
 
     def writePort(self, packet):
         try:
-            if self.websocket:
-                self.websocket.send_binary(packet)
-                return len(packet)
+            # Check if WebSocket is connected using the 'sock' attribute
+            if not self.websocket or not self.websocket.sock:
+                print("Write error: WebSocket is not connected.")
+                return 0
+
+            # Convert list to bytes if packet is a list of integers
+            if isinstance(packet, list):
+                # Convert the list of integers to a bytearray (assuming each list element is an integer)
+                packet = bytearray(packet)
+                # print(f"Converted list to bytearray: {packet}")
+
+            # Send the packet depending on its type
+            if isinstance(packet, (bytes, bytearray)):
+                self.websocket.send_binary(packet)  # Send binary data using send_binary
+            elif isinstance(packet, str):
+                self.websocket.send(packet)  # Send as text
+            else:
+                print(f"Write error: Invalid packet type {type(packet)}")
+                return 0
+
+            # print(f"Packet sent: {packet}")
+            return len(packet)
         except Exception as e:
             print(f"Write error: {e}")
-        return 0
-
+            return 0
+    
     def setPacketTimeout(self, packet_length):
         self.packet_start_time = self.getCurrentTime()
         self.packet_timeout = (self.tx_time_per_byte * packet_length) + (LATENCY_TIMER * 2.0) + 2.0
