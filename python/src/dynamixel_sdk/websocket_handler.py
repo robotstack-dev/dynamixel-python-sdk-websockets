@@ -1,11 +1,13 @@
 import time
 import sys
 import websocket
+from .port_handler import PortHandler
 
 LATENCY_TIMER = 16
+# default to native baudrate to prevent errors at init
 DEFAULT_BAUDRATE = 115200
 
-class PortHandler:
+class WebSocketHandler(PortHandler):
     def __init__(self, websocket_url):
         self.is_open = False
         self.baudrate = DEFAULT_BAUDRATE
@@ -25,8 +27,14 @@ class PortHandler:
     def closePort(self):
         # Closes the WebSocket connection
         if self.websocket:
-            self.websocket.close()
-            self.is_open = False
+            try:
+                self.websocket.close()
+            except Exception as e:
+                print(f"Error closing WebSocket: {e}")
+            finally:
+                self.websocket = None
+                self.is_open = False
+                self.buffer = b""
 
     def clearPort(self):
         # Clear any buffer or state, WebSockets don't use buffers in the same way as serial
@@ -56,37 +64,40 @@ class PortHandler:
         return self.baudrate
 
     def getBytesAvailable(self):
-        # WebSocket doesn't have a direct equivalent to check available bytes
-        return 0
+        # Return the number of bytes available in the buffer
+        return len(self.buffer)
 
     def readPort(self, length):
         try:
             # Check if buffer has enough data to fulfill the request
             if len(self.buffer) >= length:
-                # If yes, slice the buffer and update it with remaining data
                 data, self.buffer = self.buffer[:length], self.buffer[length:]
                 return data
 
             # If buffer doesn't have enough data, attempt to receive more from WebSocket
-            if self.websocket:
-                received_data = self.websocket.recv()
-                
-                # Add new data to buffer
-                self.buffer += received_data
+            if self.websocket and self.websocket.sock:
+                try:
+                    received_data = self.websocket.recv()
+                    self.buffer += received_data
 
-                # If buffer now has enough data, slice and update it
-                if len(self.buffer) >= length:
-                    data, self.buffer = self.buffer[:length], self.buffer[length:]
-                    return data
-
-                # If not enough data even after recv, return whatever is in the buffer and clear it
-                data, self.buffer = self.buffer, b""
-                return data
-
+                    if len(self.buffer) >= length:
+                        data, self.buffer = self.buffer[:length], self.buffer[length:]
+                        return data
+                    else:
+                        # Not enough data even after recv, return what we have
+                        data, self.buffer = self.buffer, b""
+                        return data
+                except websocket.WebSocketConnectionClosedException:
+                    print("WebSocket connection closed")
+                    self.is_open = False
+                    return None
+                except Exception as e:
+                    print(f"WebSocket receive error: {e}")
+                    return None
+            return None
         except Exception as e:
             print(f"Read error: {e}")
-        
-        return None
+            return None
 
     def writePort(self, packet):
         try:
@@ -144,10 +155,20 @@ class PortHandler:
             self.closePort()
 
         try:
-            self.websocket = websocket.create_connection(self.websocket_url)
+            # Add connection timeout and other websocket options
+            self.websocket = websocket.create_connection(
+                self.websocket_url,
+                timeout=5,  # 5 second timeout
+                enable_multithread=True,
+                skip_utf8_validation=True  # Performance optimization for binary data
+            )
             self.is_open = True
             self.tx_time_per_byte = (1000.0 / self.baudrate) * 10.0
             return True
+        except websocket.WebSocketTimeoutException:
+            print("Connection timeout")
+            self.is_open = False
+            return False
         except Exception as e:
             print(f"Failed to connect to WebSocket: {e}")
             self.is_open = False

@@ -4,7 +4,7 @@ import platform
 
 setup(
     name='dynamixel_sdk_with_websockets',
-    version='3.7.51.dev02',
+    version='3.7.51.dev03',
     packages=['dynamixel_sdk'],
     package_dir={'': 'src'},
     license='Apache 2.0',
