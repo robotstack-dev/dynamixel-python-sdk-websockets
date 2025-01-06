@@ -52,7 +52,7 @@ else:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
         return ch
 
-from dynamixel_sdk import *                 # Uses Dynamixel SDK library
+from smart_servo_websockets import *                 # Uses Dynamixel SDK library
 
 # Control table address
 ADDR_MX_BAUDRATE            = 8                 # Control table address is different in Dynamixel model
@@ -63,8 +63,11 @@ PROTOCOL_VERSION            = 1.0               # See which protocol version is 
 # Default setting
 DXL_ID                      = 1                 # Dynamixel ID : 1
 BAUDRATE                    = 57600             # Dynamixel default baudrate : 57600
-DEVICENAME                  = '/dev/ttyUSB0'    # Check which port is being used on your controller
-                                                # ex) Windows: "COM1"   Linux: "/dev/ttyUSB0" Mac: "/dev/tty.usbserial-*"
+
+# Use the actual port assigned to the smart servo controller.
+# ex) Windows: "COM*", Linux: "/dev/ttyUSB*", Mac: "/dev/tty.usbserial-*"
+DEVICENAME                  = '/dev/tty.usbmodem12301'
+# DEVICENAME                  = 'ws://192.168.2.61:80'  # Update this for your system 
 
 FACTORYRST_DEFAULTBAUDRATE  = 57600             # Dynamixel baudrate set by factoryreset
 NEW_BAUDNUM                 = 1                 # New baudnum to recover Dynamixel baudrate as it was

@@ -3,14 +3,14 @@ from setuptools import setup, find_packages
 import platform
 
 setup(
-    name='dynamixel_sdk_with_websockets',
-    version='3.7.51.dev03',
-    packages=['dynamixel_sdk'],
+    name='smart_servo_websockets',
+    version='3.7.51.dev4',
+    packages=['smart_servo_websockets'],
     package_dir={'': 'src'},
     license='Apache 2.0',
-    description='Dynamixel SDK 3 python package with custom modifications',
+    description='Smart Servo Websockets python package forked from DynamixelSDK',
     long_description=open('README.txt').read(),
-    url='https://github.com/nsted/DynamixelSDK-websocket',
+    url='https://github.com/nsted/smart-servo-websockets',
     author='Leon Jung, Nicholas Stedman',
     author_email='nick@devicist.com',
     install_requires=[

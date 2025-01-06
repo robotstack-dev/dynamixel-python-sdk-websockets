@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-################################################################################
+#*******************************************************************************
 # Copyright 2017 ROBOTIS CO., LTD.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,18 +15,21 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-################################################################################
+#*******************************************************************************
 
-# Author: Ryu Woon Jung (Leon)
 
-#
-# *********     Ping Example      *********
-#
-#
-# Available Dynamixel model on this example : All models using Protocol 1.0
-# This example is tested with a Dynamixel MX-28, and an USB2DYNAMIXEL
-# Be sure that Dynamixel MX properties are already set as %% ID : 1 / Baudnum : 34 (Baudrate : 57600)
-#
+#*******************************************************************************
+#***********************     Broadcast Ping Example      ***********************
+#  Required Environment to run this example :
+#    - Protocol 2.0 supported DYNAMIXEL(X, P, PRO/PRO(A), MX 2.0 series)
+#    - DYNAMIXEL Starter Set (U2D2, U2D2 PHB, 12V SMPS)
+#  How to use the example :
+#    - Build and Run from proper architecture subdirectory.
+#    - For ARM based SBCs such as Raspberry Pi, use linux_sbc subdirectory to build and run.
+#    - https://emanual.robotis.com/docs/en/software/dynamixel/dynamixel_sdk/overview/
+#  Author: Ryu Woon Jung (Leon)
+#  Maintainer : Zerom, Will Son
+# *******************************************************************************
 
 import os
 
@@ -46,16 +49,19 @@ else:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
         return ch
 
-from dynamixel_sdk import *                 # Uses Dynamixel SDK library
+from smart_servo_websockets import *                 # Uses Dynamixel SDK library
 
-# Protocol version
-PROTOCOL_VERSION        = 1.0               # See which protocol version is used in the Dynamixel
+# DYNAMIXEL Protocol Version (1.0 / 2.0)
+# https://emanual.robotis.com/docs/en/dxl/protocol2/
+PROTOCOL_VERSION            = 2.0         
 
-# Default setting
-DXL_ID                  = 1                 # Dynamixel ID : 1
-BAUDRATE                = 57600             # Dynamixel default baudrate : 57600
-DEVICENAME              = '/dev/tty.usbmodem12301'   # Check which port is being used on your controller
-                                            # ex) Windows: "COM1"   Linux: "/dev/ttyUSB0" Mac: "/dev/tty.usbserial-*"
+# Define the proper baudrate to search DYNAMIXELs. Note that XL320's baudrate is 1 M bps.
+BAUDRATE                = 1000000  
+
+# Use the actual port assigned to the smart servo controller.
+# ex) Windows: "COM*", Linux: "/dev/ttyUSB*", Mac: "/dev/tty.usbserial-*"
+DEVICENAME                  = '/dev/tty.usbmodem12301'
+# DEVICENAME                  = 'ws://192.168.2.61:80'  # Update this for your system
 
 # Initialize PortHandler instance
 # Set the port path
@@ -86,15 +92,14 @@ else:
     getch()
     quit()
 
-# Try to ping the Dynamixel
-# Get Dynamixel model number
-dxl_model_number, dxl_comm_result, dxl_error = packetHandler.ping(portHandler, DXL_ID)
+# Try to broadcast ping the Dynamixel
+dxl_data_list, dxl_comm_result = packetHandler.broadcastPing(portHandler)
 if dxl_comm_result != COMM_SUCCESS:
     print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
-elif dxl_error != 0:
-    print("%s" % packetHandler.getRxPacketError(dxl_error))
-else:
-    print("[ID:%03d] ping Succeeded. Dynamixel model number : %d" % (DXL_ID, dxl_model_number))
+
+print("Detected Dynamixel :")
+for dxl_id in dxl_data_list:
+    print("[ID:%03d] model version : %d | firmware version : %d" % (dxl_id, dxl_data_list.get(dxl_id)[0], dxl_data_list.get(dxl_id)[1]))
 
 # Close port
 portHandler.closePort()

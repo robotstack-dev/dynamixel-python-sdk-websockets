@@ -70,7 +70,7 @@ else:
 
         return 0
 
-from dynamixel_sdk import *                    # Uses Dynamixel SDK library
+from smart_servo_websockets import *                    # Uses Dynamixel SDK library
 
 #********* DYNAMIXEL Model definition *********
 #***** (Use only one definition at a time) *****
@@ -102,10 +102,10 @@ PROTOCOL_VERSION            = 2.0            # See which protocol version is use
 # Factory default ID of all DYNAMIXEL is 1
 DXL_ID                      = 1
 
-# Use the actual port assigned to the U2D2.
+# Use the actual port assigned to the smart servo controller.
 # ex) Windows: "COM*", Linux: "/dev/ttyUSB*", Mac: "/dev/tty.usbserial-*"
-# DEVICENAME                  = '/dev/tty.usbmodem12301'
-DEVICENAME                  = 'ws://192.168.2.61:80'  # Update this for your systemg
+DEVICENAME                  = '/dev/tty.usbmodem12301'
+# DEVICENAME                  = 'ws://192.168.2.61:80'  # Update this for your system
 
 BAUDRATE                    = 1000000
 EXT_POSITION_CONTROL_MODE   = 4                 # The value of Extended Position Control Mode that can be set through the Operating Mode (11)

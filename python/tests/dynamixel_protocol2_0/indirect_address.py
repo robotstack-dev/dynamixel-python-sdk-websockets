@@ -50,7 +50,7 @@ else:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
         return ch
 
-from dynamixel_sdk import *                          # Uses Dynamixel SDK library
+from smart_servo_websockets import *                          # Uses Dynamixel SDK library
 
 #********* DYNAMIXEL Model definition *********
 #***** (Use only one definition at a time) *****
@@ -118,7 +118,7 @@ elif MY_DXL == 'P_SERIES' or MY_DXL == 'PRO_A_SERIES':
     LEN_INDIRECTDATA_FOR_READ           = 5          # Sum of Data of Length. i.e) Moving (1 byte) + Present Position data (4 bytes)
     DXL_MINIMUM_POSITION_VALUE          = -150000    # Refer to the Minimum Position Limit of product eManual
     DXL_MAXIMUM_POSITION_VALUE          = 150000     # Refer to the Maximum Position Limit of product eManual
-    BAUDRATE                            = 57600
+    BAUDRATE                            = 1000000
 
 # DYNAMIXEL Protocol Version (1.0 / 2.0)
 # https://emanual.robotis.com/docs/en/dxl/protocol2/
@@ -127,9 +127,10 @@ PROTOCOL_VERSION            = 2.0
 # Factory default ID of all DYNAMIXEL is 1
 DXL_ID                      = 1
 
-# Use the actual port assigned to the U2D2.
+# Use the actual port assigned to the smart servo controller.
 # ex) Windows: "COM*", Linux: "/dev/ttyUSB*", Mac: "/dev/tty.usbserial-*"
-DEVICENAME                  = '/dev/ttyUSB0'
+DEVICENAME                  = '/dev/tty.usbmodem12301'
+# DEVICENAME                  = 'ws://192.168.2.61:80'  # Update this for your system
 
 TORQUE_ENABLE               = 1                     # Value for enabling the torque
 TORQUE_DISABLE              = 0                     # Value for disabling the torque

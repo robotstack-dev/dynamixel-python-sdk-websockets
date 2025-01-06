@@ -19,11 +19,12 @@
 
 
 #*******************************************************************************
-#***********************     Broadcast Ping Example      ***********************
+#***********************     Ping Example      ***********************
 #  Required Environment to run this example :
 #    - Protocol 2.0 supported DYNAMIXEL(X, P, PRO/PRO(A), MX 2.0 series)
 #    - DYNAMIXEL Starter Set (U2D2, U2D2 PHB, 12V SMPS)
 #  How to use the example :
+#    - Select the DYNAMIXEL in use at the MY_DXL in the example code. 
 #    - Build and Run from proper architecture subdirectory.
 #    - For ARM based SBCs such as Raspberry Pi, use linux_sbc subdirectory to build and run.
 #    - https://emanual.robotis.com/docs/en/software/dynamixel/dynamixel_sdk/overview/
@@ -49,18 +50,22 @@ else:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
         return ch
 
-from dynamixel_sdk import *                 # Uses Dynamixel SDK library
+from smart_servo_websockets import *                 # Uses Dynamixel SDK library
 
 # DYNAMIXEL Protocol Version (1.0 / 2.0)
 # https://emanual.robotis.com/docs/en/dxl/protocol2/
-PROTOCOL_VERSION            = 2.0         
+PROTOCOL_VERSION            = 2.0
 
 # Define the proper baudrate to search DYNAMIXELs. Note that XL320's baudrate is 1 M bps.
-BAUDRATE                = 57600  
+BAUDRATE                = 1000000
 
-# Use the actual port assigned to the U2D2.
+# Factory default ID of all DYNAMIXEL is 1
+DXL_ID                      = 1
+
+# Use the actual port assigned to the smart servo controller.
 # ex) Windows: "COM*", Linux: "/dev/ttyUSB*", Mac: "/dev/tty.usbserial-*"
-DEVICENAME                  = '/dev/tty.usbmodem12301'    
+DEVICENAME                  = '/dev/tty.usbmodem12301'
+# DEVICENAME                  = 'ws://192.168.2.61:80'  # Update this for your system 
 
 # Initialize PortHandler instance
 # Set the port path
@@ -91,14 +96,15 @@ else:
     getch()
     quit()
 
-# Try to broadcast ping the Dynamixel
-dxl_data_list, dxl_comm_result = packetHandler.broadcastPing(portHandler)
+# Try to ping the Dynamixel
+# Get Dynamixel model number
+dxl_model_number, dxl_comm_result, dxl_error = packetHandler.ping(portHandler, DXL_ID)
 if dxl_comm_result != COMM_SUCCESS:
     print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
-
-print("Detected Dynamixel :")
-for dxl_id in dxl_data_list:
-    print("[ID:%03d] model version : %d | firmware version : %d" % (dxl_id, dxl_data_list.get(dxl_id)[0], dxl_data_list.get(dxl_id)[1]))
+elif dxl_error != 0:
+    print("%s" % packetHandler.getRxPacketError(dxl_error))
+else:
+    print("[ID:%03d] ping Succeeded. Dynamixel model number : %d" % (DXL_ID, dxl_model_number))
 
 # Close port
 portHandler.closePort()

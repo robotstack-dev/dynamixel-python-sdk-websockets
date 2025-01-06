@@ -50,7 +50,7 @@ else:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
         return ch
 
-from dynamixel_sdk import *                    # Uses Dynamixel SDK library
+from smart_servo_websockets import *                    # Uses Dynamixel SDK library
 
 # Control table address for Dynamixel MX
 ADDR_MX_TORQUE_ENABLE       = 64               # Control table address is different in Dynamixel model
@@ -69,9 +69,11 @@ PROTOCOL_VERSION2           = 2.0
 # Default setting
 DXL1_ID                     = 1                 # Dynamixel#1 ID : 1
 DXL2_ID                     = 2                 # Dynamixel#2 ID : 2
-BAUDRATE                    = 57600             # Dynamixel default baudrate : 57600
-DEVICENAME                  = '/dev/ttyUSB0'    # Check which port is being used on your controller
-                                                # ex) Windows: "COM1"   Linux: "/dev/ttyUSB0" Mac: "/dev/tty.usbserial-*"
+BAUDRATE                    = 1000000            # Dynamixel  baudrate : 1000000
+# Use the actual port assigned to the smart servo controller.
+# ex) Windows: "COM*", Linux: "/dev/ttyUSB*", Mac: "/dev/tty.usbserial-*"
+DEVICENAME                  = '/dev/tty.usbmodem12301'
+# DEVICENAME                  = 'ws://192.168.2.61:80'  # Update this for your system 
 
 TORQUE_ENABLE               = 1                 # Value for enabling the torque
 TORQUE_DISABLE              = 0                 # Value for disabling the torque

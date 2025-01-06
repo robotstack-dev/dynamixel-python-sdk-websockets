@@ -51,7 +51,7 @@ else:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
         return ch
 
-from dynamixel_sdk import *                    # Uses Dynamixel SDK library
+from smart_servo_websockets import *                    # Uses Dynamixel SDK library
 
 #********* DYNAMIXEL Model definition *********
 #***** (Use only one definition at a time) *****
@@ -69,21 +69,21 @@ if MY_DXL == 'X_SERIES' or MY_DXL == 'MX_SERIES':
     ADDR_PRESENT_POSITION       = 132
     DXL_MINIMUM_POSITION_VALUE  = 0         # Refer to the Minimum Position Limit of product eManual
     DXL_MAXIMUM_POSITION_VALUE  = 4095      # Refer to the Maximum Position Limit of product eManual
-    BAUDRATE                    = 57600
+    BAUDRATE                    = 1000000
 elif MY_DXL == 'PRO_SERIES':
     ADDR_TORQUE_ENABLE          = 562       # Control table address is different in DYNAMIXEL model
     ADDR_GOAL_POSITION          = 596
     ADDR_PRESENT_POSITION       = 611
     DXL_MINIMUM_POSITION_VALUE  = -150000   # Refer to the Minimum Position Limit of product eManual
     DXL_MAXIMUM_POSITION_VALUE  = 150000    # Refer to the Maximum Position Limit of product eManual
-    BAUDRATE                    = 57600
+    BAUDRATE                    = 1000000
 elif MY_DXL == 'P_SERIES' or MY_DXL == 'PRO_A_SERIES':
     ADDR_TORQUE_ENABLE          = 512        # Control table address is different in DYNAMIXEL model
     ADDR_GOAL_POSITION          = 564
     ADDR_PRESENT_POSITION       = 580
     DXL_MINIMUM_POSITION_VALUE  = -150000   # Refer to the Minimum Position Limit of product eManual
     DXL_MAXIMUM_POSITION_VALUE  = 150000    # Refer to the Maximum Position Limit of product eManual
-    BAUDRATE                    = 57600
+    BAUDRATE                    = 1000000
 elif MY_DXL == 'XL320':
     ADDR_TORQUE_ENABLE          = 24
     ADDR_GOAL_POSITION          = 30
@@ -98,8 +98,8 @@ PROTOCOL_VERSION            = 2.0               #  See which protocol version is
 # Default setting
 DXL1_ID                     = 1                 # Dynamixel#1 ID : 1
 DXL2_ID                     = 2                 # Dynamixel#2 ID : 2
-DEVICENAME1                 = '/dev/ttyUSB0'    # Check which port is being used on your controller
-DEVICENAME2                 = '/dev/ttyUSB1'    # ex) Windows: "COM1"   Linux: "/dev/ttyUSB0" Mac: "/dev/tty.usbserial-*"
+DEVICENAME1                = '/dev/tty.usbmodem12301'    # Check which port is being used on your controller
+DEVICENAME2                 = '/dev/tty.debug-console'    # ex) Windows: "COM1"   Linux: "/dev/ttyUSB0" Mac: "/dev/tty.usbserial-*"
 
 TORQUE_ENABLE               = 1                 # Value for enabling the torque
 TORQUE_DISABLE              = 0                 # Value for disabling the torque
