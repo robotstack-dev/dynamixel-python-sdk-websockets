@@ -1,6 +1,6 @@
-## Dynamixel SDK Websocket fork
+## Dynamixel SDK Websockets
 
-This fork adds support in python for using a websocket client as a port instead of a serial port. This makes it possible to use wifi to control your dynamixels. However, it requires the dynamixels to be connected to a control board (such as an ESP32) that uses a websocket server to relay the comms to and from connected motors. I developed such a board for my own use, so this is a fairly personal project at the moment. If you have such a board, then this may be of use.
+This fork of the [Dynamixel SDK](https://github.com/ROBOTIS-GIT/DynamixelSDK) adds support in python for using a websocket client as a port instead of a serial port. This makes it possible to use WiFi to control your dynamixels. However, it requires the dynamixels to be connected over half-suplex serial to a WiFi-enabledcontrol board (such as an ESP32) that uses a websocket server to relay the comms to and from connected motors. I am developing such a board and will link to it here when it is available.
 
 The Arduino sketch that works as the websocket server is available here:\
 https://github.com/nsted/websocketServerForSmartServos

@@ -64,8 +64,8 @@ DXL_ID                      = 1
 
 # Use the actual port assigned to the smart servo controller.
 # ex) Windows: "COM*", Linux: "/dev/ttyUSB*", Mac: "/dev/tty.usbserial-*"
-DEVICENAME                  = '/dev/tty.usbmodem12301'
-# DEVICENAME                  = 'ws://192.168.2.61:80'  # Update this for your system 
+# DEVICENAME                  = '/dev/tty.usbmodem12301'
+DEVICENAME                  = 'ws://192.168.2.61:80'  # Update this for your system 
 
 # Initialize PortHandler instance
 # Set the port path

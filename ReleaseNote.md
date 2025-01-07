@@ -1,4 +1,11 @@
-# Dynamixel SDK Release Notes
+# Dynamixel SDK Websockets Release Notes
+
+3.7.51.dev1 (2025-01-08)
+------------------------
+* Initial release of Fork
+* Added websockets support to the python package
+* Removed other language support (C, C++, MATLAB, LabVIEW, Java, etc.)
+* Contributors: Nicholas Stedman
 
 3.7.51 (2021-04-14)
 -------------------

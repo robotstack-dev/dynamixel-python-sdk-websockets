@@ -1,9 +1,9 @@
 Metadata-Version: 2.1
-Name: smart_servo_websockets
-Version: 3.7.51.dev4
-Summary: Smart Servo Websockets python package forked from DynamixelSDK
-Home-page: https://github.com/nsted/smart-servo-websockets
-Author: Leon Jung, Nicholas Stedman
+Name: dynamixelSDK_websockets
+Version: 3.7.51.dev1
+Summary: fork of DynamixelSDK python package with added websockets support
+Home-page: https://github.com/nsted/dyamixelSDK-websockets
+Author: Nicholas Stedman
 Author-email: nick@devicist.com
 License: Apache 2.0
 License-File: LICENSE.txt

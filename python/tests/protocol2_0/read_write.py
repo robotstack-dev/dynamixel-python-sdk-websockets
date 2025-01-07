@@ -101,8 +101,8 @@ DXL_ID                      = 1
 
 # Use the actual port assigned to the smart servo controller.
 # ex) Windows: "COM*", Linux: "/dev/ttyUSB*", Mac: "/dev/tty.usbserial-*"
-DEVICENAME                  = '/dev/tty.usbmodem12301'
-# DEVICENAME                  = 'ws://192.168.2.61:80'  # Update this for your system
+# DEVICENAME                  = '/dev/tty.usbmodem12301'
+DEVICENAME                  = 'ws://192.168.2.61:80'  # Update this for your system
 
 TORQUE_ENABLE               = 1     # Value for enabling the torque
 TORQUE_DISABLE              = 0     # Value for disabling the torque
