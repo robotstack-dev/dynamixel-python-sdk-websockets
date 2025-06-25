@@ -63,7 +63,7 @@ BAUDRATE                    = 57600             # Dynamixel default baudrate : 5
 # Use the actual port assigned to the smart servo controller.
 # ex) Windows: "COM*", Linux: "/dev/ttyUSB*", Mac: "/dev/tty.usbserial-*"
 DEVICENAME1                  = '/dev/tty.usbmodem12301'
-# DEVICENAME1                  = 'ws://192.168.2.61:80'  # Update this for your system 
+# DEVICENAME1                  = 'ws://192.168.2.61:8080'  # Update this for your system 
 DEVICENAME2                 = '/dev/tty.debug-console'    # ex) Windows: "COM1"   Linux: "/dev/ttyUSB0" Mac: "/dev/tty.usbserial-*"
 
 TORQUE_ENABLE               = 1                 # Value for enabling the torque
